@@ -14,24 +14,39 @@ In dist.ini
 
 use strict;
 use warnings;
+
 package Dist::Zilla::Plugin::ReleaseToDarkpan;
 
 use Moose;
-with qw(Dist::Zilla::Role::Releaser);
+with qw(Dist::Zilla::Role::BeforeRelease Dist::Zilla::Role::Releaser);
 
 use CPAN::Mirror::Tiny;
+use Cwd;
 
 has 'darkpan' => (
-	is => 'ro',
-	isa => 'Str',
-	default => '~/darkpan',
+    is      => 'ro',
+    isa     => 'Str',
+    default => '~/darkpan',
 );
 
+has 'create_if_missing' => (
+    is      => 'ro',
+    isa     => 'Int',
+    default => 0,
+);
+
+sub before_release {
+    my ( $self, $archive ) = @_;
+
+    if ( $self->create_if_missing && !-d $self->darkpan ) {
+        mkdir $self->darkpan, 0775
+            or die "@{[$self->darkpan]}: $!";
+        print STDERR "mkdir @{[$self->darkpan]}\n";
+    }
+}
+
 sub release {
-	my ($self, $archive) = @_;
-	warn 'release;';
-	warn $archive;
-	warn $self->darkpan;
+    my ( $self, $archive ) = @_;
 }
 
 1;

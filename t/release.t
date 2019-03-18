@@ -9,19 +9,30 @@ use File::Basename;
 use lib dirname(__FILE__) . '/../lib';
 use Dist::Zilla::Plugin::ReleaseToDarkpan;
 
+use constant {
+	DARKPAN => '/tmp/test-darkpan',
+};
+
 my $tzil = Builder->from_config(
     { dist_root => 'test-corpus/DZT' },
     {   add_files => {
             'source/dist.ini' => simple_ini(
                 'GatherDir',
-                [ ReleaseToDarkpan => { darkpan => './test-darkpan', } ]
+                [   ReleaseToDarkpan => {
+                        darkpan           => DARKPAN,
+                        create_if_missing => 1,
+                    }
+                ]
             )
         },
     }
 );
 
-$tzil->build;
+if (-d DARKPAN) {
+	unlink DARKPAN
+}
+	
 $tzil->release;
-ok( -f './test-darkpan' );
+ok( -d DARKPAN );
 
 done_testing;
