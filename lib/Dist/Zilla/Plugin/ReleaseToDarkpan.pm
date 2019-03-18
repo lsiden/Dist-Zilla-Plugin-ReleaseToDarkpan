@@ -48,7 +48,6 @@ sub before_release {
 sub release {
     my ( $self, $archive ) = @_;
     my $cpan = CPAN::Mirror::Tiny->new( base => $self->darkpan );
-    warn $archive;
     $cpan->inject($archive);
     $cpan->write_index;
 }

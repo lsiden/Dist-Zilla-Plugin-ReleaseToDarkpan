@@ -34,6 +34,11 @@ if (-d DARKPAN) {
 	
 $tzil->build;
 $tzil->release;
-ok( -d DARKPAN );
+
+my $index = "@{[DARKPAN]}/modules/02packages.details.txt";
+
+ok( -d DARKPAN, "@{[DARKPAN]} dir exists" );
+ok( -f $index || -f $index . '.gz', "index exists" );
+ok( -f "@{[DARKPAN]}/authors/id/V/VE/VENDOR/DZT-v1.0.tar.gz", 'module found');
 
 done_testing;
