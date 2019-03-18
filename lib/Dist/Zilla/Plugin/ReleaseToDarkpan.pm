@@ -1,5 +1,5 @@
-#PODNAME Dist::Zilla::Plugin::ReleaseToDarkpan
-#ABSTRACT Plugin to release module to a local darkpan directory.
+#PODNAME: Dist::Zilla::Plugin::ReleaseToDarkpan
+#ABSTRACT: Plugin to release module to a local darkpan directory.
 
 =pod
 
@@ -21,19 +21,26 @@ use Moose;
 with qw(Dist::Zilla::Role::BeforeRelease Dist::Zilla::Role::Releaser);
 
 use CPAN::Mirror::Tiny;
-use Cwd;
+use Cwd qw(abs_path);
+use Data::Dumper;
 
 has 'darkpan' => (
-    is      => 'ro',
+    is      => 'rw',
     isa     => 'Str',
     default => '~/darkpan',
 );
 
 has 'create_if_missing' => (
     is      => 'ro',
-    isa     => 'Int',
+    isa     => 'Bool',
     default => 0,
 );
+
+sub BUILD {
+	my ($self, $args) = @_;
+	$args->{darkpan} =~ s{^\~/}{$ENV{HOME}/};
+	$self->darkpan(abs_path($args->{darkpan}));
+}
 
 sub before_release {
     my ( $self, $archive ) = @_;
@@ -47,6 +54,7 @@ sub before_release {
 
 sub release {
     my ( $self, $archive ) = @_;
+    warn Dumper($self->darkpan), ' ';
     my $cpan = CPAN::Mirror::Tiny->new( base => $self->darkpan );
     $cpan->inject($archive);
     $cpan->write_index;
