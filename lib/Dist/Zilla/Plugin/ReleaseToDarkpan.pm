@@ -39,7 +39,7 @@ sub before_release {
     my ( $self, $archive ) = @_;
 
     if ( $self->create_if_missing && !-d $self->darkpan ) {
-        mkdir $self->darkpan, 0775
+            mkdir $self->darkpan, 0775
             or die "@{[$self->darkpan]}: $!";
         print STDERR "mkdir @{[$self->darkpan]}\n";
     }
@@ -47,6 +47,10 @@ sub before_release {
 
 sub release {
     my ( $self, $archive ) = @_;
+    my $cpan = CPAN::Mirror::Tiny->new( base => $self->darkpan );
+    warn $archive;
+    $cpan->inject($archive);
+    $cpan->write_index;
 }
 
 1;

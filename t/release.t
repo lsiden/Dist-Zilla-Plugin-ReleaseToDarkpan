@@ -32,6 +32,7 @@ if (-d DARKPAN) {
 	unlink DARKPAN
 }
 	
+$tzil->build;
 $tzil->release;
 ok( -d DARKPAN );
 
