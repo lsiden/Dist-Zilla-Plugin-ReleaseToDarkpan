@@ -14,7 +14,7 @@ use constant {
 };
 
 my $tzil = Builder->from_config(
-    { dist_root => 'test-corpus/DZT' },
+    { dist_root => 'test-fixture/DZT' },
     {   add_files => {
             'source/dist.ini' => simple_ini(
                 'GatherDir',
