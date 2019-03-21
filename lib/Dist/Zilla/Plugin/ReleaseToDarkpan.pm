@@ -46,7 +46,7 @@ sub before_release {
     my ( $self, $archive ) = @_;
 
     if ( $self->create_if_missing && !-d $self->darkpan ) {
-            mkdir $self->darkpan, 0775
+            mkdir $self->darkpan, oct(775)
             or die "@{[$self->darkpan]}: $!";
         print STDERR "mkdir @{[$self->darkpan]}\n";
     }
