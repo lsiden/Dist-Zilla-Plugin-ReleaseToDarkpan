@@ -8,7 +8,8 @@
 In dist.ini
 
     [ReleaseToDarkpan]
-    dir=path/to/darkpan ; default ~/.darkpan
+    darkpan = ~/.darkpan
+    create_if_missing = 0
     
 =cut
 

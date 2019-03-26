@@ -16,8 +16,8 @@ Usage
 In dist.ini:
 
 	[ReleaseToDarkpan]
-	darkpan => '~/darkpan'
-	create_if_missing => 0
+	darkpan = '~/darkpan'
+	create_if_missing = 0
 
 INSTALLATION
 ------------
